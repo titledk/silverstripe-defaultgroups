@@ -1,0 +1,20 @@
+{
+	"name": "titledk/silverstripe-defaultgroups",
+	"description": "Programmatically define default groups",
+	"type": "silverstripe-module",
+	"homepage": "https://github.com/titledk/silverstripe-defaultgroups",
+	"keywords": ["silverstripe", "security", "app"],
+	"license": "MIT",
+	"authors": [
+		{"name": "Anselm Christophersen","email": "ac@anselm.dk"}
+	],
+	"support": {
+		"issues": "https://github.com/titledk/silverstripe-defaultgroups"
+	},
+	"require": {
+		"silverstripe/framework": "~3.1"
+	},
+	"extra": {
+		"installer-name": "defaultgroups"
+	}
+}
