@@ -22,7 +22,7 @@ class DefaultGroupsHelper {
 	 * @param string $parent
 	 * @param array $permissions
 	 */
-	static function default_group($code, $title, $parentCode = NULL, $permissions = array()) {
+    public static function default_group($code, $title, $parentCode = NULL, $permissions = array()) {
 
 		$group = null;
 		$action = null;
