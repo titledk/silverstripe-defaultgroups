@@ -12,50 +12,48 @@
  * @author Anselm Christophersen <ac@anselm.dk>
  * @date   July 2015
  */
-class DefaultGroupsHelper {
+class DefaultGroupsHelper
+{
 
-	/**
-	 * Check for default group, and if it doesn't exist, create it
-	 * Should be run under "requireDefaultRecords"
-	 * @param string $code
-	 * @param string $title
-	 * @param string $parent
-	 * @param array $permissions
-	 */
-	static function default_group($code, $title, $parentCode = NULL, $permissions = array()) {
+    /**
+     * Check for default group, and if it doesn't exist, create it
+     * Should be run under "requireDefaultRecords"
+     * @param string $code
+     * @param string $title
+     * @param string $parent
+     * @param array $permissions
+     */
+    public static function default_group($code, $title, $parentCode = null, $permissions = array())
+    {
+        $group = null;
+        $action = null;
+        if (!DataObject::get_one('Group', "Code = '" . $code . "'")) {
+            $action = 'create';
+            $group = new Group();
+        } else {
+            $action = 'update';
+            $group = DataObject::get_one('Group', "Code = '" . $code . "'");
+        }
 
-		$group = null;
-		$action = null;
-		if(!DataObject::get_one('Group', "Code = '" . $code . "'")) {
-			$action = 'create';
-			$group = new Group();
+        $group->Title = $title;
+        $group->Code = $code;
+        if ($parentCode) {
+            $parentObj = DataObject::get_one("Group", "Code = '" . $parentCode . "'");
+            $group->ParentID = $parentObj->ID;
+        }
+        $group->write();
 
-		} else {
-			$action = 'update';
-			$group = DataObject::get_one('Group', "Code = '" . $code . "'");
-
-		}
-
-		$group->Title = $title;
-		$group->Code = $code;
-		if ($parentCode) {
-			$parentObj = DataObject::get_one("Group", "Code = '" . $parentCode . "'");
-			$group->ParentID = $parentObj->ID;
-		}
-		$group->write();
-
-		if (!empty($permissions)) {
-			foreach ($permissions as $p) {
-				Permission::grant($group->ID, $p);
-			}
-		}
-		if ($action == 'create') {
-			DB::alteration_message('Group ' . $title . ' (' . $code . ') has been created.',"created");
-		}
-		if ($action == 'update') {
-			DB::alteration_message('Group ' . $title . ' (' . $code . ') has been updated.',"updated");
-		}
-		return $group;
-	}
-
+        if (!empty($permissions)) {
+            foreach ($permissions as $p) {
+                Permission::grant($group->ID, $p);
+            }
+        }
+        if ($action == 'create') {
+            DB::alteration_message('Group ' . $title . ' (' . $code . ') has been created.', "created");
+        }
+        if ($action == 'update') {
+            DB::alteration_message('Group ' . $title . ' (' . $code . ') has been updated.', "updated");
+        }
+        return $group;
+    }
 }
