@@ -43,9 +43,12 @@ class DefaultGroupsHelper
         }
         $group->write();
 
+        //TODO currently already granted permissions are not removed programatically
         if (!empty($permissions)) {
             foreach ($permissions as $p) {
-                Permission::grant($group->ID, $p);
+                if (!$group->Permissions()->filter('Code', $p)->count() > 0) {
+                    Permission::grant($group->ID, $p);
+                }
             }
         }
         if ($action == 'create') {
